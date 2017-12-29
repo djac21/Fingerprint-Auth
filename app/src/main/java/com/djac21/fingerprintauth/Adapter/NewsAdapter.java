@@ -19,7 +19,14 @@ import com.djac21.fingerprintauth.CustomTabs.WebViewActivity;
 import com.djac21.fingerprintauth.Models.NewsModel;
 import com.djac21.fingerprintauth.R;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
@@ -41,13 +48,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        String date = news.get(position).getDate().replace("T", " ");
-        date = date.substring(0, date.indexOf("Z"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getDefault());
+        long time = 0;
+        try {
+            time = simpleDateFormat.parse(news.get(position).getDate()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
 
         holder.title.setText(news.get(position).getTitle());
         holder.author.setText(news.get(position).getAuthor());
         holder.description.setText(news.get(position).getDescription());
-        holder.date.setText(date);
+        holder.date.setText(prettyTime.format(new Date(time)));
         Glide.with(context)
                 .load(news.get(position).getImage())
                 .placeholder(R.drawable.ic_loading)
