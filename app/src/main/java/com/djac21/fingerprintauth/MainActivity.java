@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<NewsResponse>() {
                 @Override
                 public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
-                    List<NewsModel> news = response.body().getResults();
-                    recyclerView.setAdapter(new NewsAdapter(news, R.layout.card_view, getApplicationContext()));
+                    if (response.isSuccessful()) {
+                        List<NewsModel> news = response.body().getResults();
+                        recyclerView.setAdapter(new NewsAdapter(news, R.layout.card_view, getApplicationContext()));
+                    }
                 }
 
                 @Override
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void aboutDialog(){
+    public void aboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Welcome!")
                 .setMessage(R.string.about_dialog)
