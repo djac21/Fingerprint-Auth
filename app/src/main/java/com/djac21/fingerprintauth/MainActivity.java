@@ -1,6 +1,7 @@
 package com.djac21.fingerprintauth;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -92,6 +93,18 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<NewsResponse> call, Throwable t) {
                     Log.e(TAG, t.toString());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Error!")
+                            .setCancelable(false)
+                            .setMessage("The was an error on displaying the data, please be sure that you have internet access")
+                            .setNegativeButton("Cancel", null)
+                            .setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    new GetData().execute();
+                                }
+                            });
+                    builder.create().show();
                 }
             });
             return null;
