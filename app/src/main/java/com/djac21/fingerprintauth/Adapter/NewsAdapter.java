@@ -125,6 +125,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         private void openWebView(Uri uri) {
             Intent webViewIntent = new Intent(context, WebViewActivity.class);
             webViewIntent.putExtra(WebViewActivity.EXTRA_URL, uri.toString());
+            webViewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(webViewIntent);
         }
     }
