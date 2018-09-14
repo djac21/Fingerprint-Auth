@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.djac21.fingerprintauth.CustomTabs.CustomTabActivityHelper;
 import com.djac21.fingerprintauth.CustomTabs.WebViewActivity;
 import com.djac21.fingerprintauth.Models.NewsModel;
@@ -65,7 +66,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.date.setText(prettyTime.format(new Date(time)));
         Glide.with(context)
                 .load(news.get(position).getImage())
-                .placeholder(R.drawable.ic_loading)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.ic_loading)
+                        .error(R.drawable.ic_loading))
                 .into(holder.image);
     }
 
